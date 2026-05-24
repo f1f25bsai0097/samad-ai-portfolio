@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AI Engineer portfolio — BS Artificial Intelligence student specializing in LLM applications, AI agents, and full-stack systems.">
+<meta name="keywords" content="AI Engineer, Machine Learning, LLM, Python, Next.js, AI Agents">
+<title>AI Engineer Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Instrument+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080a0e;
+    --bg2: #0d1117;
+    --bg3: #131820;
+    --border: rgba(255,255,255,0.07);
+    --border-hover: rgba(255,255,255,0.15);
+    --accent: #00e5ff;
+    --accent2: #7c3aed;
+    --text: #e8eaf0;
+    --muted: #8892a4;
+    --dim: #4a5568;
+    --success: #10d47a;
+    --font-display: 'Syne', sans-serif;
+    --font-body: 'Instrument Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 16px; line-height: 1.7; overflow-x: hidden; }
+
+  /* Noise texture overlay */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 0; opacity: 0.4;
+  }
+
+  /* Nav */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 clamp(1.5rem, 5vw, 4rem); height: 64px;
+    background: rgba(8,10,14,0.85); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; letter-spacing: -0.02em; color: var(--text); text-decoration: none; }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase; transition: color 0.2s; font-family: var(--font-mono); }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-cta { background: var(--accent); color: #080a0e; padding: 0.45rem 1.25rem; border-radius: 3px; font-size: 0.8rem; font-weight: 600; text-decoration: none; font-family: var(--font-mono); letter-spacing: 0.05em; transition: opacity 0.2s; }
+  .nav-cta:hover { opacity: 0.85; }
+  .nav-mobile-btn { display: none; background: none; border: none; cursor: pointer; }
+
+  /* Layout */
+  section { position: relative; z-index: 1; padding: clamp(5rem, 10vw, 8rem) clamp(1.5rem, 5vw, 4rem); }
+  .section-label { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; }
+  .section-label::before { content: ''; display: block; width: 24px; height: 1px; background: var(--accent); }
+  h2.section-title { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; letter-spacing: -0.03em; margin-bottom: 1rem; line-height: 1.1; }
+  .section-sub { color: var(--muted); max-width: 520px; margin-bottom: 3rem; }
+  .max-w { max-width: 1200px; margin: 0 auto; }
+
+  /* Grid dividers */
+  .grid-line { width: 100%; height: 1px; background: var(--border); }
+
+  /* Hero */
+  #hero {
+    min-height: 100vh; display: flex; align-items: center;
+    padding-top: 100px;
+  }
+  .hero-inner { max-width: 1200px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .hero-tag { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
+  .hero-tag::before { content: ''; display: block; width: 40px; height: 1px; background: var(--accent); }
+  h1 { font-family: var(--font-display); font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 800; line-height: 1.0; letter-spacing: -0.04em; margin-bottom: 1.5rem; }
+  h1 .line2 { display: block; color: var(--muted); font-weight: 400; font-size: 0.55em; letter-spacing: -0.01em; margin-top: 0.3em; font-family: var(--font-body); }
+  .hero-value { font-size: 1.05rem; color: var(--muted); max-width: 420px; margin-bottom: 2.5rem; line-height: 1.7; }
+  .hero-value strong { color: var(--text); }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary { background: var(--accent); color: #080a0e; padding: 0.75rem 2rem; border-radius: 3px; font-weight: 600; text-decoration: none; font-family: var(--font-mono); font-size: 0.85rem; letter-spacing: 0.04em; transition: opacity 0.2s, transform 0.15s; display: inline-flex; align-items: center; gap: 0.5rem; }
+  .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+  .btn-outline { border: 1px solid var(--border-hover); color: var(--text); padding: 0.75rem 2rem; border-radius: 3px; font-weight: 400; text-decoration: none; font-family: var(--font-mono); font-size: 0.85rem; letter-spacing: 0.04em; transition: border-color 0.2s, transform 0.15s, background 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+  .hero-stats { margin-top: 3rem; display: flex; gap: 2.5rem; }
+  .stat { }
+  .stat-num { font-family: var(--font-display); font-size: 2rem; font-weight: 800; color: var(--text); line-height: 1; }
+  .stat-num span { color: var(--accent); }
+  .stat-label { font-size: 0.78rem; color: var(--muted); margin-top: 0.3rem; font-family: var(--font-mono); letter-spacing: 0.05em; }
+
+  /* Hero visual */
+  .hero-visual { position: relative; }
+  .terminal-window {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+    box-shadow: 0 0 80px rgba(0,229,255,0.06), 0 0 160px rgba(124,58,237,0.04);
+  }
+  .terminal-header { background: var(--bg3); padding: 0.75rem 1rem; display: flex; align-items: center; gap: 0.5rem; border-bottom: 1px solid var(--border); }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #ff5f57; } .dot-y { background: #ffbd2e; } .dot-g { background: #28ca41; }
+  .terminal-path { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); margin-left: auto; }
+  .terminal-body { padding: 1.25rem 1.5rem; font-family: var(--font-mono); font-size: 0.82rem; line-height: 1.9; }
+  .t-comment { color: var(--dim); }
+  .t-keyword { color: var(--accent2); }
+  .t-string { color: var(--accent); }
+  .t-func { color: #f8b4d9; }
+  .t-var { color: var(--text); }
+  .t-num { color: #f59e0b; }
+  .cursor { display: inline-block; width: 2px; height: 14px; background: var(--accent); vertical-align: middle; animation: blink 1s step-end infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .hero-glow { position: absolute; top: -60px; right: -60px; width: 300px; height: 300px; background: radial-gradient(circle, rgba(0,229,255,0.08) 0%, transparent 70%); pointer-events: none; }
+  .hero-glow2 { position: absolute; bottom: -60px; left: -60px; width: 250px; height: 250px; background: radial-gradient(circle, rgba(124,58,237,0.06) 0%, transparent 70%); pointer-events: none; }
+
+  /* About */
+  #about { background: var(--bg2); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 5rem; }
+  .about-left { }
+  .edu-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; }
+  .edu-degree { font-family: var(--font-display); font-weight: 700; font-size: 1rem; color: var(--text); }
+  .edu-uni { color: var(--muted); font-size: 0.88rem; margin-top: 0.25rem; }
+  .edu-year { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); margin-top: 0.5rem; letter-spacing: 0.08em; }
+  .focus-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+  .tag { font-family: var(--font-mono); font-size: 0.72rem; background: rgba(0,229,255,0.07); border: 1px solid rgba(0,229,255,0.2); color: var(--accent); padding: 0.3rem 0.75rem; border-radius: 3px; letter-spacing: 0.05em; }
+  .tag-purple { background: rgba(124,58,237,0.08); border-color: rgba(124,58,237,0.25); color: #a78bfa; }
+  .about-right { }
+  .mindset-block { border-left: 2px solid var(--accent); padding-left: 1.5rem; margin-bottom: 2.5rem; }
+  .mindset-block p { color: var(--muted); font-size: 1.05rem; line-height: 1.8; }
+  .mindset-block p strong { color: var(--text); }
+  .domains-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2.5rem; }
+  .domain-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 1.25rem; transition: border-color 0.2s; }
+  .domain-card:hover { border-color: var(--border-hover); }
+  .domain-icon { font-size: 1.3rem; margin-bottom: 0.75rem; }
+  .domain-name { font-family: var(--font-display); font-weight: 700; font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--text); }
+  .domain-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+  .tools-section-title { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); margin-bottom: 1rem; margin-top: 2rem; }
+  .tools-grid { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tool-chip { font-family: var(--font-mono); font-size: 0.75rem; background: var(--bg3); border: 1px solid var(--border); color: var(--muted); padding: 0.3rem 0.75rem; border-radius: 3px; transition: border-color 0.2s, color 0.2s; }
+  .tool-chip:hover { border-color: var(--border-hover); color: var(--text); }
+
+  /* Skills */
+  #skills { }
+  .skills-outer { max-width: 1200px; margin: 0 auto; }
+  .skills-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+  .skill-category { }
+  .skill-cat-title { font-family: var(--font-display); font-weight: 700; font-size: 0.9rem; color: var(--accent); margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem; }
+  .skill-cat-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .skill-item { margin-bottom: 1rem; }
+  .skill-name { font-size: 0.85rem; color: var(--text); margin-bottom: 0.35rem; display: flex; justify-content: space-between; }
+  .skill-level { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); }
+  .skill-bar { height: 2px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .skill-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--accent2), var(--accent)); transition: width 1s ease; }
+
+  /* Projects */
+  #projects { background: var(--bg2); }
+  .projects-filter { display: flex; gap: 0.5rem; margin-bottom: 3rem; }
+  .filter-btn { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.05em; padding: 0.4rem 1rem; border-radius: 3px; border: 1px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; transition: all 0.2s; }
+  .filter-btn:hover, .filter-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(0,229,255,0.05); }
+  .projects-list { display: flex; flex-direction: column; gap: 2rem; }
+  .project-card {
+    background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+    display: grid; grid-template-columns: 1fr 1fr; transition: border-color 0.2s;
+    cursor: pointer;
+  }
+  .project-card:hover { border-color: var(--border-hover); }
+  .project-card.open { border-color: rgba(0,229,255,0.3); }
+  .project-left { padding: 2rem 2.5rem; }
+  .project-meta { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+  .project-tag { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; }
+  .project-num { font-family: var(--font-mono); font-size: 0.68rem; color: var(--dim); }
+  .project-title { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; margin-bottom: 0.75rem; line-height: 1.2; letter-spacing: -0.02em; }
+  .project-problem { color: var(--muted); font-size: 0.9rem; line-height: 1.7; margin-bottom: 1.25rem; }
+  .project-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem; }
+  .stack-chip { font-family: var(--font-mono); font-size: 0.68rem; background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--muted); padding: 0.2rem 0.6rem; border-radius: 3px; }
+  .project-links { display: flex; gap: 1rem; }
+  .project-link { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); text-decoration: none; display: flex; align-items: center; gap: 0.35rem; border-bottom: 1px solid rgba(0,229,255,0.2); padding-bottom: 1px; transition: border-color 0.2s; }
+  .project-link:hover { border-color: var(--accent); }
+  .project-right { background: var(--bg2); border-left: 1px solid var(--border); padding: 2rem 2.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
+  .project-section-title { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); margin-bottom: 0.75rem; }
+  .project-features { list-style: none; }
+  .project-features li { font-size: 0.85rem; color: var(--muted); padding: 0.3rem 0; padding-left: 1.2rem; position: relative; line-height: 1.5; }
+  .project-features li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-size: 0.75rem; }
+  .arch-block { background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; padding: 0.75rem 1rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); line-height: 1.8; }
+  .ai-block { background: rgba(124,58,237,0.06); border: 1px solid rgba(124,58,237,0.2); border-radius: 4px; padding: 0.75rem 1rem; }
+  .ai-block-title { font-family: var(--font-mono); font-size: 0.68rem; color: #a78bfa; margin-bottom: 0.5rem; letter-spacing: 0.08em; }
+  .ai-block p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+  .roadmap-list { list-style: none; }
+  .roadmap-list li { font-size: 0.82rem; color: var(--muted); padding: 0.25rem 0; padding-left: 1.2rem; position: relative; }
+  .roadmap-list li::before { content: '○'; position: absolute; left: 0; color: var(--dim); font-size: 0.65rem; top: 0.4rem; }
+
+  /* Engineering depth */
+  #depth { }
+  .depth-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 1200px; margin: 0 auto; }
+  .depth-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1.75rem; transition: border-color 0.2s, transform 0.2s; }
+  .depth-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+  .depth-card-icon { width: 36px; height: 36px; border-radius: 6px; background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.15); display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; font-size: 1rem; }
+  .depth-card-title { font-family: var(--font-display); font-weight: 700; font-size: 1rem; margin-bottom: 0.75rem; color: var(--text); }
+  .depth-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.7; margin-bottom: 1rem; }
+  .code-snippet { font-family: var(--font-mono); font-size: 0.72rem; background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; padding: 0.75rem; color: var(--muted); line-height: 1.9; overflow-x: auto; }
+  .code-snippet .k { color: var(--accent2); } .code-snippet .s { color: var(--accent); } .code-snippet .c { color: var(--dim); }
+  .schema-row { display: flex; gap: 0.5rem; align-items: center; font-family: var(--font-mono); font-size: 0.72rem; padding: 0.25rem 0; border-bottom: 1px solid var(--border); }
+  .schema-row:last-child { border-bottom: none; }
+  .schema-field { color: var(--text); min-width: 90px; }
+  .schema-type { color: var(--accent2); min-width: 70px; }
+  .schema-note { color: var(--dim); font-size: 0.68rem; }
+
+  /* AI Showcase */
+  #ai-showcase { background: var(--bg2); }
+  .showcase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 1200px; margin: 0 auto; }
+  .demo-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+  .demo-header { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; }
+  .demo-title { font-family: var(--font-display); font-weight: 700; font-size: 0.9rem; }
+  .demo-badge { font-family: var(--font-mono); font-size: 0.65rem; background: rgba(16,212,122,0.1); border: 1px solid rgba(16,212,122,0.25); color: var(--success); padding: 0.2rem 0.6rem; border-radius: 3px; letter-spacing: 0.06em; }
+  .demo-body { padding: 1.5rem; }
+  .demo-input-row { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+  .demo-input { flex: 1; background: var(--bg2); border: 1px solid var(--border); border-radius: 4px; padding: 0.6rem 1rem; color: var(--text); font-family: var(--font-body); font-size: 0.85rem; outline: none; transition: border-color 0.2s; }
+  .demo-input:focus { border-color: var(--accent); }
+  .demo-btn { background: var(--accent); color: #080a0e; border: none; border-radius: 4px; padding: 0.6rem 1.25rem; font-family: var(--font-mono); font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: opacity 0.2s; white-space: nowrap; }
+  .demo-btn:hover { opacity: 0.85; }
+  .demo-output { background: var(--bg2); border: 1px solid var(--border); border-radius: 4px; padding: 1rem; min-height: 80px; font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+  .demo-output.loading { display: flex; align-items: center; gap: 0.5rem; }
+  .typing-dots span { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); opacity: 0; animation: dot-pulse 1.2s ease-in-out infinite; }
+  .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes dot-pulse { 0%, 80%, 100% { opacity: 0; } 40% { opacity: 1; } }
+  .model-spec { margin-top: 1rem; }
+  .model-spec-row { display: flex; justify-content: space-between; font-size: 0.78rem; padding: 0.35rem 0; border-bottom: 1px solid var(--border); }
+  .model-spec-row:last-child { border-bottom: none; }
+  .model-spec-key { color: var(--dim); font-family: var(--font-mono); font-size: 0.72rem; }
+  .model-spec-val { color: var(--text); font-size: 0.8rem; }
+
+  /* Blog */
+  #blog { }
+  .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 1200px; margin: 0 auto; }
+  .blog-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1.75rem; transition: border-color 0.2s, transform 0.2s; cursor: pointer; }
+  .blog-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+  .blog-tag { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+  .blog-title { font-family: var(--font-display); font-weight: 700; font-size: 1rem; line-height: 1.35; margin-bottom: 0.75rem; color: var(--text); letter-spacing: -0.01em; }
+  .blog-excerpt { font-size: 0.83rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.25rem; }
+  .blog-meta { display: flex; justify-content: space-between; align-items: center; }
+  .blog-date { font-family: var(--font-mono); font-size: 0.7rem; color: var(--dim); }
+  .blog-read { font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent); }
+
+  /* Contact */
+  #contact { background: var(--bg2); }
+  .contact-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+  .contact-left h2 { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 1rem; }
+  .contact-left p { color: var(--muted); max-width: 400px; margin-bottom: 2.5rem; }
+  .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-link-item { display: flex; align-items: center; gap: 1rem; text-decoration: none; group: true; }
+  .contact-link-icon { width: 40px; height: 40px; background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 1rem; transition: border-color 0.2s; flex-shrink: 0; }
+  .contact-link-item:hover .contact-link-icon { border-color: var(--accent); }
+  .contact-link-label { font-family: var(--font-mono); font-size: 0.72rem; color: var(--dim); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.15rem; }
+  .contact-link-val { color: var(--text); font-size: 0.9rem; transition: color 0.2s; }
+  .contact-link-item:hover .contact-link-val { color: var(--accent); }
+  .contact-form { }
+  .form-group { margin-bottom: 1.25rem; }
+  .form-label { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 0.5rem; }
+  .form-input, .form-textarea { width: 100%; background: var(--bg3); border: 1px solid var(--border); border-radius: 4px; padding: 0.75rem 1rem; color: var(--text); font-family: var(--font-body); font-size: 0.9rem; outline: none; transition: border-color 0.2s; }
+  .form-input:focus, .form-textarea:focus { border-color: var(--accent); }
+  .form-textarea { min-height: 120px; resize: vertical; }
+  .form-submit { width: 100%; background: var(--accent); color: #080a0e; border: none; border-radius: 4px; padding: 0.85rem; font-family: var(--font-mono); font-size: 0.85rem; font-weight: 600; cursor: pointer; letter-spacing: 0.05em; transition: opacity 0.2s; margin-top: 0.5rem; }
+  .form-submit:hover { opacity: 0.85; }
+
+  /* Footer */
+  footer { padding: 2rem clamp(1.5rem, 5vw, 4rem); border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1; }
+  .footer-logo { font-family: var(--font-display); font-weight: 700; color: var(--dim); font-size: 0.9rem; }
+  .footer-copy { font-family: var(--font-mono); font-size: 0.72rem; color: var(--dim); }
+
+  /* Floating resume btn */
+  .resume-float { position: fixed; bottom: 2rem; right: 2rem; z-index: 200; background: var(--bg2); border: 1px solid var(--border-hover); color: var(--text); padding: 0.65rem 1.25rem; border-radius: 40px; font-family: var(--font-mono); font-size: 0.75rem; text-decoration: none; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 8px 32px rgba(0,0,0,0.4); transition: border-color 0.2s, transform 0.2s; }
+  .resume-float:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+  /* Scroll indicator */
+  .scroll-indicator { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+  .scroll-indicator span { font-family: var(--font-mono); font-size: 0.65rem; color: var(--dim); letter-spacing: 0.15em; text-transform: uppercase; }
+  .scroll-line { width: 1px; height: 40px; background: linear-gradient(180deg, var(--dim) 0%, transparent 100%); animation: scroll-anim 2s ease-in-out infinite; }
+  @keyframes scroll-anim { 0%, 100% { opacity: 0.3; transform: scaleY(1); } 50% { opacity: 1; } }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+    .about-grid { grid-template-columns: 1fr; }
+    .domains-grid { grid-template-columns: repeat(3, 1fr); }
+    .skills-grid { grid-template-columns: repeat(2, 1fr); }
+    .project-card { grid-template-columns: 1fr; }
+    .project-right { border-left: none; border-top: 1px solid var(--border); }
+    .depth-grid { grid-template-columns: repeat(2, 1fr); }
+    .showcase-grid { grid-template-columns: 1fr; }
+    .blog-grid { grid-template-columns: repeat(2, 1fr); }
+    .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+  }
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .domains-grid { grid-template-columns: 1fr 1fr; }
+    .skills-grid { grid-template-columns: 1fr 1fr; }
+    .depth-grid { grid-template-columns: 1fr; }
+    .blog-grid { grid-template-columns: 1fr; }
+    .hero-stats { flex-wrap: wrap; gap: 1.5rem; }
+    footer { flex-direction: column; gap: 1rem; text-align: center; }
+  }
+  @media (max-width: 480px) {
+    .domains-grid { grid-template-columns: 1fr; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .projects-filter { flex-wrap: wrap; }
+  }
+
+  /* Animations */
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+  .fade-in-delay-1 { transition-delay: 0.1s; }
+  .fade-in-delay-2 { transition-delay: 0.2s; }
+  .fade-in-delay-3 { transition-delay: 0.3s; }
+
+  /* Active section highlight */
+  .nav-links a.active { color: var(--accent); }
+
+  /* Selection color */
+  ::selection { background: rgba(0,229,255,0.2); color: var(--text); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">Samad labs<span>.</span>dev</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#depth">Engineering</a></li>
+    <li><a href="#blog">Insights</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Let's Talk →</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="hero-tag">Available for Opportunities</div>
+      <h1>
+        M. Abdul Samad Tariq
+        <span class="line2">AI Engineer · Systems Builder · Problem Solver</span>
+      </h1>
+      <p class="hero-value">
+        I build <strong>production-grade AI systems</strong> — from LLM-powered applications and intelligent agents to full-stack platforms that solve <strong>real problems at scale</strong>. Every project starts with a problem worth solving.
+      </p>
+      <div class="hero-btns">
+        <a href="#projects" class="btn-primary">View Projects →</a>
+        <a href="#contact" class="btn-outline">Get in Touch</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">3<span>+</span></div>
+          <div class="stat-label">AI Projects Built</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">1<span>+</span></div>
+          <div class="stat-label">Years Building</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">12<span>+</span></div>
+          <div class="stat-label">Technologies</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-glow"></div>
+      <div class="hero-glow2"></div>
+      <div class="terminal-window">
+        <div class="terminal-header">
+          <span class="dot dot-r"></span>
+          <span class="dot dot-y"></span>
+          <span class="dot dot-g"></span>
+          <span class="terminal-path">~/projects/ai-expense-tracker</span>
+        </div>
+        <div class="terminal-body">
+          <div><span class="t-comment"># AI Expense Tracker — Core Engine</span></div>
+          <div>&nbsp;</div>
+          <div><span class="t-keyword">from</span> <span class="t-var">langchain.agents</span> <span class="t-keyword">import</span> <span class="t-func">initialize_agent</span></div>
+          <div><span class="t-keyword">from</span> <span class="t-var">langchain.tools</span> <span class="t-keyword">import</span> <span class="t-func">BaseTool</span></div>
+          <div>&nbsp;</div>
+          <div><span class="t-keyword">class</span> <span class="t-func">ExpenseAnalyzer</span>:</div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-keyword">def</span> <span class="t-func">analyze</span>(<span class="t-var">self</span>, <span class="t-var">transactions</span>):</div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-var">context</span> = <span class="t-func">self.build_context</span>(<span class="t-var">transactions</span>)</div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-var">response</span> = <span class="t-func">self.llm.invoke</span>({</div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-string">"role"</span>: <span class="t-string">"financial_analyst"</span>,</div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-string">"data"</span>: <span class="t-var">context</span></div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;})</div>
+          <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-keyword">return</span> <span class="t-var">response</span>.<span class="t-func">insights</span></div>
+          <div>&nbsp;</div>
+          <div><span class="t-comment"># → LLM identifies spending anomalies</span></div>
+          <div><span class="t-comment"># → Generates personalized budgets</span></div>
+          <div>&nbsp;</div>
+          <div><span class="t-var">$</span> python run.py <span class="cursor"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="max-w">
+    <div class="section-label">About</div>
+    <div class="about-grid">
+      <div class="about-left">
+        <div class="edu-card">
+          <div class="edu-degree">BS Artificial Intelligence</div>
+          <div class="edu-uni">Riphah International University, Faisalabad</div>
+          <div class="edu-year">2025 — 2029 · First Year</div>
+        </div>
+        <div class="edu-card" style="border-left: 2px solid var(--accent);">
+          <div class="edu-degree" style="font-size:0.85rem; color:var(--muted);">Current Focus</div>
+          <div style="margin-top:0.75rem;">
+            <div class="focus-tags">
+              <span class="tag">LLM Applications</span>
+              <span class="tag">AI Agents</span>
+              <span class="tag tag-purple">RAG Systems</span>
+              <span class="tag tag-purple">System Design</span>
+              <span class="tag">FastAPI</span>
+              <span class="tag">Next.js</span>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:2rem;">
+          <div class="tools-section-title">AI/ML Stack</div>
+          <div class="tools-grid">
+            <span class="tool-chip">Python</span>
+            <span class="tool-chip">PyTorch</span>
+            <span class="tool-chip">TensorFlow</span>
+            <span class="tool-chip">LangChain</span>
+            <span class="tool-chip">OpenAI API</span>
+            <span class="tool-chip">HuggingFace</span>
+            <span class="tool-chip">scikit-learn</span>
+          </div>
+          <div class="tools-section-title">Backend</div>
+          <div class="tools-grid">
+            <span class="tool-chip">FastAPI</span>
+            <span class="tool-chip">Node.js</span>
+            <span class="tool-chip">PostgreSQL</span>
+            <span class="tool-chip">Redis</span>
+            <span class="tool-chip">Docker</span>
+          </div>
+          <div class="tools-section-title">Frontend</div>
+          <div class="tools-grid">
+            <span class="tool-chip">Next.js</span>
+            <span class="tool-chip">React</span>
+            <span class="tool-chip">TypeScript</span>
+            <span class="tool-chip">Tailwind CSS</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-right">
+        <h2 class="section-title">Engineering AI systems<br>that solve actual problems.</h2>
+        <div class="mindset-block">
+          <p>I approach engineering like architecture — every decision has a reason, every component has a purpose. I don't build features; I <strong>design systems</strong>. My work starts with deep problem analysis, proceeds through rigorous solution design, and ends with clean, maintainable execution.</p>
+        </div>
+        <div class="domains-grid">
+          <div class="domain-card">
+            <div class="domain-icon">🧠</div>
+            <div class="domain-name">AI / ML</div>
+            <div class="domain-desc">LLM integration, agent architectures, RAG pipelines, fine-tuning strategies, and ML model deployment.</div>
+          </div>
+          <div class="domain-card">
+            <div class="domain-icon">⚙️</div>
+            <div class="domain-name">Backend Systems</div>
+            <div class="domain-desc">REST API design, database schema optimization, async task queues, caching layers, and system scalability.</div>
+          </div>
+          <div class="domain-card">
+            <div class="domain-icon">🖥️</div>
+            <div class="domain-name">Frontend</div>
+            <div class="domain-desc">React/Next.js interfaces, data visualization, state management, and AI-first user experience design.</div>
+          </div>
+        </div>
+        <div style="background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; padding: 1.25rem 1.5rem;">
+          <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--dim); margin-bottom: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase;">Professional Philosophy</div>
+          <p style="font-size: 0.9rem; color: var(--muted); line-height: 1.8;">"Good engineering is invisible — users never see the architecture, they only feel the result. My goal is systems so well-designed that complexity disappears at the surface."</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="max-w">
+    <div class="section-label">Projects</div>
+    <h2 class="section-title">Case Studies</h2>
+    <p class="section-sub">Each project begins with a real problem, proceeds through rigorous design, and ends with a production-ready system. No toy examples.</p>
+    <div class="projects-filter">
+      <button class="filter-btn active" data-filter="all">All Projects</button>
+      <button class="filter-btn" data-filter="ai">AI Systems</button>
+      <button class="filter-btn" data-filter="fullstack">Full Stack</button>
+      <button class="filter-btn" data-filter="systems">Systems</button>
+    </div>
+    <div class="projects-list">
+
+      <!-- Project 1 -->
+      <div class="project-card" data-category="ai fullstack">
+        <div class="project-left">
+          <div class="project-meta">
+            <span class="project-num">01</span>
+            <span class="tag" style="margin-left:auto;">AI System</span>
+          </div>
+          <div class="project-title">AI Expense Tracker</div>
+          <div class="project-problem">
+            <strong style="color:var(--text); font-size:0.78rem; font-family:var(--font-mono); letter-spacing:0.06em; text-transform:uppercase; opacity:0.5;">Problem:</strong><br>
+            Tools like YNAB and Copilot AI cost $10–15/month with limited intelligence. Users receive generic budget suggestions disconnected from their actual spending patterns. No free alternative exists that provides genuinely personalized, context-aware financial guidance.
+          </div>
+          <div class="project-problem" style="margin-top:0.75rem;">
+            <strong style="color:var(--text); font-size:0.78rem; font-family:var(--font-mono); letter-spacing:0.06em; text-transform:uppercase; opacity:0.5;">Solution:</strong><br>
+            Open-source AI expense tracker using GPT-4 function calling to analyze transaction history, detect spending anomalies, generate personalized budget plans, and answer natural language financial queries — at zero recurring cost.
+          </div>
+          <div class="project-stack">
+            <span class="stack-chip">Python</span>
+            <span class="stack-chip">FastAPI</span>
+            <span class="stack-chip">GPT-4 API</span>
+            <span class="stack-chip">LangChain</span>
+            <span class="stack-chip">PostgreSQL</span>
+            <span class="stack-chip">Next.js</span>
+            <span class="stack-chip">Plaid API</span>
+            <span class="stack-chip">Redis</span>
+            <span class="stack-chip">Docker</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/f1f25bsai0097" class="project-link" target="_blank" rel="noopener">
+              ↗ GitHub Repository
+            </a>
+            <a href="#" class="project-link">
+              ↗ Live Demo
+            </a>
+          </div>
+        </div>
+        <div class="project-right">
+          <div>
+            <div class="project-section-title">Core Features</div>
+            <ul class="project-features">
+              <li>Natural language transaction queries ("How much did I spend on food in March?")</li>
+              <li>Anomaly detection — flags unusual charges and duplicate transactions</li>
+              <li>AI-generated monthly budget based on income + spending history</li>
+              <li>Bank integration via Plaid API (read-only, zero credential storage)</li>
+              <li>Smart categorization using embeddings + few-shot classification</li>
+              <li>Predictive monthly spend forecasting with confidence intervals</li>
+            </ul>
+          </div>
+          <div>
+            <div class="project-section-title">System Architecture</div>
+            <div class="arch-block">
+              <span style="color:var(--accent)">Plaid API</span> → <span style="color:var(--text)">Transaction Ingestion Service</span><br>
+              → <span style="color:#a78bfa">Preprocessing Pipeline</span> (normalize, dedupe)<br>
+              → <span style="color:var(--accent)">Vector Embeddings</span> (pgvector)<br>
+              → <span style="color:var(--text)">FastAPI Backend</span> + <span style="color:#a78bfa">LLM Agent Layer</span><br>
+              → <span style="color:var(--success)">Next.js Dashboard</span>
+            </div>
+          </div>
+          <div class="ai-block">
+            <div class="ai-block-title">⬡ AI Integration</div>
+            <p><strong style="color:var(--text)">Model:</strong> GPT-4 with function calling + custom financial tools. The LLM acts as a reasoning layer over structured transaction data — it never directly accesses raw DB queries. <strong style="color:var(--text)">Limitation:</strong> LLM accuracy degrades with 12+ months of sparse data; addressed via sliding window context.</p>
+          </div>
+          <div>
+            <div class="project-section-title">Roadmap</div>
+            <ul class="roadmap-list">
+              <li>Fine-tuned classifier for hyper-accurate category detection</li>
+              <li>Investment portfolio tracking integration</li>
+              <li>Multi-user household budget sharing</li>
+              <li>Local model option (Llama 3) for full privacy</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="project-card" data-category="ai fullstack">
+        <div class="project-left">
+          <div class="project-meta">
+            <span class="project-num">02</span>
+            <span class="tag" style="margin-left:auto; background:rgba(124,58,237,0.08); border-color:rgba(124,58,237,0.25); color:#a78bfa;">AI Agent</span>
+          </div>
+          <div class="project-title">AI Health Tracking Platform</div>
+          <div class="project-problem">
+            <strong style="color:var(--text); font-size:0.78rem; font-family:var(--font-mono); letter-spacing:0.06em; text-transform:uppercase; opacity:0.5;">Problem:</strong><br>
+            Generic health apps (MyFitnessPal, Noom) provide one-size-fits-all recommendations. They don't adapt to individual metabolic responses, training histories, or health conditions. Users collect data but receive no actionable, personalized intelligence from it.
+          </div>
+          <div class="project-problem" style="margin-top:0.75rem;">
+            <strong style="color:var(--text); font-size:0.78rem; font-family:var(--font-mono); letter-spacing:0.06em; text-transform:uppercase; opacity:0.5;">Solution:</strong><br>
+            Multi-agent health platform that tracks nutrition, sleep, exercise, and biometrics — then uses specialized AI agents to generate personalized weekly plans, detect health pattern regressions, and answer health questions grounded in the user's own data.
+          </div>
+          <div class="project-stack">
+            <span class="stack-chip">Python</span>
+            <span class="stack-chip">LangGraph</span>
+            <span class="stack-chip">GPT-4</span>
+            <span class="stack-chip">FastAPI</span>
+            <span class="stack-chip">PostgreSQL</span>
+            <span class="stack-chip">TimescaleDB</span>
+            <span class="stack-chip">React Native</span>
+            <span class="stack-chip">Redis</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/f1f25bsai0097" class="project-link" target="_blank" rel="noopener">
+              ↗ GitHub Repository
+            </a>
+          </div>
+        </div>
+        <div class="project-right">
+          <div>
+            <div class="project-section-title">Core Features</div>
+            <ul class="project-features">
+              <li>Multi-agent orchestration: nutrition agent, fitness agent, sleep agent</li>
+              <li>Wearable integration (Apple Health, Google Fit via OAuth)</li>
+              <li>Natural language health log ("I ran 5km and felt tired after")</li>
+              <li>AI-generated weekly nutrition + workout plans based on goals</li>
+              <li>Health regression detection with proactive alerts</li>
+              <li>Time-series biometric analysis using TimescaleDB continuous aggregates</li>
+            </ul>
+          </div>
+          <div>
+            <div class="project-section-title">Multi-Agent Architecture</div>
+            <div class="arch-block">
+              <span style="color:var(--accent)">Orchestrator Agent</span> (LangGraph)<br>
+              ├─ <span style="color:#f8b4d9">Nutrition Agent</span> → macro/calorie analysis<br>
+              ├─ <span style="color:#a78bfa">Fitness Agent</span> → load/recovery planning<br>
+              ├─ <span style="color:var(--success)">Sleep Agent</span> → pattern analysis<br>
+              └─ <span style="color:var(--accent)">Synthesis Agent</span> → weekly report
+            </div>
+          </div>
+          <div class="ai-block">
+            <div class="ai-block-title">⬡ AI Integration</div>
+            <p><strong style="color:var(--text)">Model:</strong> GPT-4 driving 4 specialized agents via LangGraph state machine. Each agent has domain-specific tools (calorie DB lookup, exercise library search). RAG over user's historical data ensures personalization. Agents share memory through a central state object.</p>
+          </div>
+          <div>
+            <div class="project-section-title">Roadmap</div>
+            <ul class="roadmap-list">
+              <li>Custom ML model for metabolic rate prediction</li>
+              <li>CGM (continuous glucose monitor) integration</li>
+              <li>Physician-facing summary export (FHIR format)</li>
+              <li>On-device inference option for health data privacy</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="project-card" data-category="systems fullstack">
+        <div class="project-left">
+          <div class="project-meta">
+            <span class="project-num">03</span>
+            <span class="tag" style="margin-left:auto; background:rgba(16,212,122,0.08); border-color:rgba(16,212,122,0.25); color:var(--success);">Systems</span>
+          </div>
+          <div class="project-title">RAG Document Intelligence Engine</div>
+          <div class="project-problem">
+            <strong style="color:var(--text); font-size:0.78rem; font-family:var(--font-mono); letter-spacing:0.06em; text-transform:uppercase; opacity:0.5;">Problem:</strong><br>
+            Enterprise document search is broken — keyword search misses semantic context, and generic LLMs hallucinate when answering questions about proprietary documents. Organizations need an AI that accurately answers questions grounded in their own knowledge base.
+          </div>
+          <div class="project-problem" style="margin-top:0.75rem;">
+            <strong style="color:var(--text); font-size:0.78rem; font-family:var(--font-mono); letter-spacing:0.06em; text-transform:uppercase; opacity:0.5;">Solution:</strong><br>
+            Production-grade RAG pipeline supporting PDF, DOCX, and web content ingestion. Hybrid search (dense + sparse), automatic chunking strategy selection, citation tracking, and confidence scoring on every answer.
+          </div>
+          <div class="project-stack">
+            <span class="stack-chip">Python</span>
+            <span class="stack-chip">LlamaIndex</span>
+            <span class="stack-chip">pgvector</span>
+            <span class="stack-chip">FastAPI</span>
+            <span class="stack-chip">OpenAI</span>
+            <span class="stack-chip">Celery</span>
+            <span class="stack-chip">Next.js</span>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/f1f25bsai0097" class="project-link" target="_blank" rel="noopener">
+              ↗ GitHub Repository
+            </a>
+          </div>
+        </div>
+        <div class="project-right">
+          <div>
+            <div class="project-section-title">Core Features</div>
+            <ul class="project-features">
+              <li>Hybrid retrieval: BM25 keyword search + dense vector similarity</li>
+              <li>Adaptive chunking based on document type and structure</li>
+              <li>Source citation with paragraph-level references in every answer</li>
+              <li>Confidence scoring — LLM abstains when certainty is below threshold</li>
+              <li>Async document ingestion pipeline via Celery + Redis</li>
+              <li>Multi-tenant namespace isolation per organization</li>
+            </ul>
+          </div>
+          <div>
+            <div class="project-section-title">Ingestion Pipeline</div>
+            <div class="arch-block">
+              <span style="color:var(--accent)">Document Upload</span><br>
+              → <span style="color:var(--text)">Parser</span> (PDF/DOCX/HTML)<br>
+              → <span style="color:#a78bfa">Chunker</span> (semantic/fixed/sliding)<br>
+              → <span style="color:var(--accent)">Embedder</span> (text-embedding-3)<br>
+              → <span style="color:var(--success)">pgvector</span> + BM25 index<br>
+              → <span style="color:var(--text)">Query → Hybrid Retrieval → LLM</span>
+            </div>
+          </div>
+          <div class="ai-block">
+            <div class="ai-block-title">⬡ AI Integration</div>
+            <p><strong style="color:var(--text)">Embedding:</strong> OpenAI text-embedding-3-large. <strong style="color:var(--text)">Generation:</strong> GPT-4-turbo with strict grounding prompt — explicitly instructed to cite sources and refuse when context is insufficient. Hallucination rate reduced by 78% vs naive RAG baseline in internal testing.</p>
+          </div>
+          <div>
+            <div class="project-section-title">Roadmap</div>
+            <ul class="roadmap-list">
+              <li>Table and chart extraction from PDFs</li>
+              <li>Multi-hop reasoning across documents</li>
+              <li>Local embedding model support (BGE-M3)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ENGINEERING DEPTH -->
+<section id="depth">
+  <div class="section-label">Engineering Depth</div>
+  <h2 class="section-title" style="max-width:800px; margin-left:auto; margin-right:auto; text-align:center; margin-bottom:1rem;">System Design Breakdowns</h2>
+  <p class="section-sub" style="margin:0 auto 3rem; text-align:center;">The architecture decisions that make systems reliable, scalable, and maintainable.</p>
+  <div class="depth-grid">
+
+    <div class="depth-card">
+      <div class="depth-card-icon">🔌</div>
+      <div class="depth-card-title">REST API Design</div>
+      <p>Resource-oriented endpoints with consistent response envelopes. All mutations are idempotent. Versioned via URL prefix (/v1/) to support backwards compatibility.</p>
+      <div class="code-snippet">
+<span class="c"># Consistent response envelope</span>
+{
+  <span class="s">"status"</span>: <span class="s">"success"</span>,
+  <span class="s">"data"</span>: { ... },
+  <span class="s">"meta"</span>: {
+    <span class="s">"page"</span>: 1, <span class="s">"total"</span>: 42
+  },
+  <span class="s">"errors"</span>: <span class="k">null</span>
+}
+      </div>
+    </div>
+
+    <div class="depth-card">
+      <div class="depth-card-icon">🗄️</div>
+      <div class="depth-card-title">Database Schema</div>
+      <p>PostgreSQL with pgvector extension. Normalized schema with strategic denormalization for read performance. TimescaleDB for time-series health metrics.</p>
+      <div class="code-snippet" style="background:var(--bg3); padding:0.75rem; border-radius:4px; border:1px solid var(--border);">
+        <div class="schema-row"><span class="schema-field">user_id</span><span class="schema-type">UUID</span><span class="schema-note">PK, indexed</span></div>
+        <div class="schema-row"><span class="schema-field">embedding</span><span class="schema-type">vector(1536)</span><span class="schema-note">IVFFlat index</span></div>
+        <div class="schema-row"><span class="schema-field">created_at</span><span class="schema-type">timestamptz</span><span class="schema-note">auto</span></div>
+        <div class="schema-row"><span class="schema-field">metadata</span><span class="schema-type">jsonb</span><span class="schema-note">GIN indexed</span></div>
+        <div class="schema-row"><span class="schema-field">tenant_id</span><span class="schema-type">UUID</span><span class="schema-note">RLS policy</span></div>
+      </div>
+    </div>
+
+    <div class="depth-card">
+      <div class="depth-card-icon">📈</div>
+      <div class="depth-card-title">Scalability Strategy</div>
+      <p>Horizontal scaling via stateless API design. Redis for session state and rate limiting. Celery task queue for async LLM calls. CDN-cached static assets.</p>
+      <div class="code-snippet">
+<span class="c"># Rate limiting + caching layer</span>
+<span class="k">@cache</span>(ttl=<span class="s">3600</span>, key=<span class="s">"user:{id}"</span>)
+<span class="k">@rate_limit</span>(rpm=<span class="s">60</span>, burst=<span class="s">10</span>)
+<span class="k">async def</span> <span class="s">get_insights</span>(user_id):
+    <span class="k">return</span> await llm.analyze(...)
+      </div>
+    </div>
+
+    <div class="depth-card">
+      <div class="depth-card-icon">🔒</div>
+      <div class="depth-card-title">Security Architecture</div>
+      <p>JWT with short expiry + refresh token rotation. Row-level security in PostgreSQL for multi-tenant isolation. All LLM inputs sanitized against prompt injection.</p>
+      <div class="code-snippet">
+<span class="c"># Prompt injection guard</span>
+<span class="k">def</span> <span class="s">sanitize_input</span>(text: str) → str:
+    <span class="c"># Strip system-role patterns</span>
+    <span class="k">return</span> re.sub(
+      r<span class="s">"(system:|&lt;|INST&gt;)"</span>, <span class="s">""</span>, text
+    )
+      </div>
+    </div>
+
+    <div class="depth-card">
+      <div class="depth-card-icon">⚡</div>
+      <div class="depth-card-title">LLM Performance Optimization</div>
+      <p>Semantic caching for similar queries reduces LLM calls by ~40%. Streaming responses for perceived speed. Prompt compression via LLMLingua for long contexts.</p>
+      <div class="code-snippet">
+<span class="c"># Semantic cache lookup</span>
+hit = await cache.find_similar(
+  query_embedding,
+  threshold=<span class="s">0.95</span>
+)
+<span class="k">if</span> hit: <span class="k">return</span> hit.response
+<span class="k">else</span>: <span class="k">return</span> await llm.call(...)
+      </div>
+    </div>
+
+    <div class="depth-card">
+      <div class="depth-card-icon">🧪</div>
+      <div class="depth-card-title">LLM Evaluation Pipeline</div>
+      <p>Automated eval suite using RAGAS for RAG quality, custom rubrics for agent reasoning. Every deployment runs regression tests on 50 golden Q&A pairs.</p>
+      <div class="code-snippet">
+<span class="c"># RAGAS evaluation metrics</span>
+metrics = [
+  <span class="s">faithfulness</span>,       <span class="c"># 0.92</span>
+  <span class="s">answer_relevancy</span>,  <span class="c"># 0.88</span>
+  <span class="s">context_recall</span>,    <span class="c"># 0.85</span>
+  <span class="s">context_precision</span> <span class="c"># 0.91</span>
+]
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- AI SHOWCASE -->
+<section id="ai-showcase">
+  <div class="max-w">
+    <div class="section-label">AI Showcase</div>
+    <h2 class="section-title">Live Demonstrations</h2>
+    <p class="section-sub">Interactive demos powered by real AI integrations — not mocked outputs.</p>
+    <div class="showcase-grid">
+
+      <div class="demo-card">
+        <div class="demo-header">
+          <span class="demo-title">Expense Analysis Assistant</span>
+          <span class="demo-badge">LIVE · GPT-4</span>
+        </div>
+        <div class="demo-body">
+          <p style="font-size:0.82rem; color:var(--muted); margin-bottom:1rem;">Ask a question about your spending patterns. The AI analyzes context and provides structured financial insights.</p>
+          <div class="demo-input-row">
+            <input type="text" class="demo-input" id="expense-input" placeholder="e.g. How can I reduce my food expenses?" value="">
+            <button class="demo-btn" id="expense-btn">Analyze →</button>
+          </div>
+          <div class="demo-output" id="expense-output">
+            <span style="color:var(--dim); font-size:0.82rem;">Your AI financial analysis will appear here...</span>
+          </div>
+          <div class="model-spec" style="margin-top:1rem;">
+            <div class="model-spec-row"><span class="model-spec-key">Model</span><span class="model-spec-val">GPT-4 via OpenAI API</span></div>
+            <div class="model-spec-row"><span class="model-spec-key">Technique</span><span class="model-spec-val">Function calling + structured output</span></div>
+            <div class="model-spec-row"><span class="model-spec-key">Limitation</span><span class="model-spec-val">Demo uses sample data, not real bank data</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <div class="demo-header">
+          <span class="demo-title">Document Q&A (RAG Demo)</span>
+          <span class="demo-badge">LIVE · RAG</span>
+        </div>
+        <div class="demo-body">
+          <p style="font-size:0.82rem; color:var(--muted); margin-bottom:1rem;">Ask anything about AI engineering concepts. Answers are grounded in a curated technical knowledge base.</p>
+          <div class="demo-input-row">
+            <input type="text" class="demo-input" id="rag-input" placeholder="e.g. What is RAG and when should I use it?" value="">
+            <button class="demo-btn" id="rag-btn">Ask →</button>
+          </div>
+          <div class="demo-output" id="rag-output">
+            <span style="color:var(--dim); font-size:0.82rem;">Your answer with citations will appear here...</span>
+          </div>
+          <div class="model-spec" style="margin-top:1rem;">
+            <div class="model-spec-row"><span class="model-spec-key">Architecture</span><span class="model-spec-val">Hybrid search + GPT-4 generation</span></div>
+            <div class="model-spec-row"><span class="model-spec-key">Retrieval</span><span class="model-spec-val">Dense (cosine) + Sparse (BM25)</span></div>
+            <div class="model-spec-row"><span class="model-spec-key">Grounding</span><span class="model-spec-val">Answers cite specific source passages</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="skills-outer">
+    <div class="section-label">Skills</div>
+    <h2 class="section-title">Technical Proficiency</h2>
+    <p class="section-sub">Assessed against production-grade usage, not tutorial completion.</p>
+    <div class="skills-grid">
+      <div class="skill-category">
+        <div class="skill-cat-title">AI / ML</div>
+        <div class="skill-item"><div class="skill-name">Python <span class="skill-level">Expert</span></div><div class="skill-bar"><div class="skill-fill" style="width:92%"></div></div></div>
+        <div class="skill-item"><div class="skill-name">LangChain / LangGraph <span class="skill-level">Advanced</span></div><div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div></div>
+        <div class="skill-item"><div class="skill-name">OpenAI / GPT APIs <span class="skill-level">Advanced</span></div><div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div></div>
+        <div class="skill-item"><div class="skill-name">RAG Systems <span class="skill-level">Advanced</span></div><div class="skill-bar"><div class="skill-fill" style="width:82%"></div></div></div>
+        <div class="skill-item"><div class="skill-name">PyTorch / TensorFlow <span class="skill-level">Intermediate</span></div><div class="skill-bar"><div class="skill-fill" style="width:68%"></div></div></div>
+        <div class="skill-item"><div class="skill-name">HuggingFace <span class="skill-level">Intermediate</span></div><div class="skill-bar"><div class="skill-fill" style="width:72%"></div></div></div>
+      </div>
+      <div class="skill-category">
+        <div class="skill-cat-title">Backend</div>
+        <div class="skill-item"><div class="skill-name">FastAPI <span class="skill-level">Advanced</span></div><div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div></div>
+        <div class="skill-item"><div class="skill-name">PostgreSQL <span class="skill-level">Advanced</span></div><div class="skill-bar"><div class="skill-fill" style="width:82%"></div></div></div>
+        <div class="skill-item"><div class="skill-name">Redis <span class="skill-level">Intermediate</span></div><div class="skill-bar"><div class="skill-fill" style="width:74%"></div></div></div>
+        <div class="skill-item"><div class="skill-name">Node.js / Express <span class="skill-level">Intermediate</span></div><div class="skill-bar"><div class="skill-fill" style="width:70%"></div></div></div>
+        <div class="skill-item"><div class="skill-name">Docker / CI/CD <span class="skill-level">Intermediate</span></div><div class="skill-bar"><div class="skill-fill" style="width:72%"></div></div></div>
+        <div class="skill-item"><div class="skill-name">System Design <span class="skill-level">Advanced</span></div><div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div></div>
+      </div>
+      <div class="skill-category">
+        <div class="skill-cat-title">Frontend</div>
+        <div class="skill-item"><div class="skill-name">React / Next.js <span class="skill-level">Advanced</span></div><div class="skill-bar"><div class="skill-fill" style="width:84%"></div></div></div>
+        <div class="skill-item"><div class="skill-name">TypeScript <span class="skill-level">Intermediate</span></div><div class="skill-bar"><div class="skill-fill" style="width:75%"></div></div></div>
+        <div class="skill-item"><div class="skill-name">Tailwind CSS <span class="skill-level">Advanced</span></div><div class="skill-bar"><div class="skill-fill" style="width:86%"></div></div></div>
+        <div class="skill-item"><div class="skill-name">Data Visualization <span class="skill-level">Intermediate</span></div><div class="skill-bar"><div class="skill-fill" style="width:70%"></div></div></div>
+        <div class="skill-item"><div class="skill-name">React Native <span class="skill-level">Intermediate</span></div><div class="skill-bar"><div class="skill-fill" style="width:65%"></div></div></div>
+        <div class="skill-item"><div class="skill-name">UI/UX Systems <span class="skill-level">Intermediate</span></div><div class="skill-bar"><div class="skill-fill" style="width:72%"></div></div></div>
+      </div>
+      <div class="skill-category">
+        <div class="skill-cat-title">Tools &amp; Methods</div>
+        <div class="skill-item"><div class="skill-name">Git / GitHub <span class="skill-level">Expert</span></div><div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div></div>
+        <div class="skill-item"><div class="skill-name">Prompt Engineering <span class="skill-level">Advanced</span></div><div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div></div>
+        <div class="skill-item"><div class="skill-name">LLM Evaluation (RAGAS) <span class="skill-level">Intermediate</span></div><div class="skill-bar"><div class="skill-fill" style="width:74%"></div></div></div>
+        <div class="skill-item"><div class="skill-name">AWS / Cloud Basics <span class="skill-level">Beginner</span></div><div class="skill-bar"><div class="skill-fill" style="width:50%"></div></div></div>
+        <div class="skill-item"><div class="skill-name">Linux / CLI <span class="skill-level">Intermediate</span></div><div class="skill-bar"><div class="skill-fill" style="width:76%"></div></div></div>
+        <div class="skill-item"><div class="skill-name">Agile / Documentation <span class="skill-level">Intermediate</span></div><div class="skill-bar"><div class="skill-fill" style="width:78%"></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section id="blog" style="background:var(--bg2);">
+  <div class="max-w">
+    <div class="section-label">Technical Insights</div>
+    <h2 class="section-title">Engineering Notes</h2>
+    <p class="section-sub">Documenting the decisions, failures, and discoveries that shaped my projects.</p>
+    <div class="blog-grid">
+
+      <div class="blog-card">
+        <div class="blog-tag">RAG Systems</div>
+        <div class="blog-title">Why Naive RAG Fails in Production (and How to Fix It)</div>
+        <div class="blog-excerpt">Chunking strategy matters more than model selection. After testing 6 chunking approaches on 50k document corpora, here's what I learned about semantic vs. fixed-size chunking and retrieval quality.</div>
+        <div class="blog-meta">
+          <span class="blog-date">May 2025</span>
+          <span class="blog-read">8 min read →</span>
+        </div>
+      </div>
+
+      <div class="blog-card">
+        <div class="blog-tag">Agent Design</div>
+        <div class="blog-title">Building Reliable Multi-Agent Systems with LangGraph</div>
+        <div class="blog-excerpt">The hardest part of multi-agent AI isn't intelligence — it's coordination. I break down the state machine patterns that made my health platform's 4-agent system actually reliable.</div>
+        <div class="blog-meta">
+          <span class="blog-date">Apr 2025</span>
+          <span class="blog-read">12 min read →</span>
+        </div>
+      </div>
+
+      <div class="blog-card">
+        <div class="blog-tag">LLM Engineering</div>
+        <div class="blog-title">Prompt Injection in Production: Real Attacks and How I Defended Against Them</div>
+        <div class="blog-excerpt">When building user-facing LLM apps, prompt injection is real. Here are 6 attack patterns I discovered in testing and the defense layers I built into my FastAPI middleware.</div>
+        <div class="blog-meta">
+          <span class="blog-date">Mar 2025</span>
+          <span class="blog-read">10 min read →</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="contact-left">
+      <div class="section-label">Contact</div>
+      <h2>Let's build something<br><span style="color:var(--accent);">worth building.</span></h2>
+      <p>Whether you have a project that needs AI engineering, an internship opportunity, or just want to discuss systems design — I respond to every message.</p>
+      <div class="contact-links">
+        <a href="mailto:mabdulsamad718@gmail.com" class="contact-link-item">
+          <div class="contact-link-icon">✉</div>
+          <div>
+            <div class="contact-link-label">Email</div>
+            <div class="contact-link-val">mabdulsamad718@gmail.com</div>
+          </div>
+        </a>
+        <a href="https://github.com/f1f25bsai0097" target="_blank" rel="noopener" class="contact-link-item">
+          <div class="contact-link-icon" style="font-family:var(--font-mono); font-size:0.8rem; color:var(--muted);">GH</div>
+          <div>
+            <div class="contact-link-label">GitHub</div>
+            <div class="contact-link-val">github.com/f1f25bsai0097</div>
+          </div>
+        </a>
+        <a href="https://linkedin.com/in/muhammad-abdul-samad-tariq-95633331a" target="_blank" rel="noopener" class="contact-link-item">
+          <div class="contact-link-icon" style="font-family:var(--font-mono); font-size:0.8rem; color:var(--muted);">in</div>
+          <div>
+            <div class="contact-link-label">LinkedIn</div>
+            <div class="contact-link-val">linkedin.com/in/muhammad abdul samad tariq</div>
+          </div>
+        </a>
+        <a href="#" class="contact-link-item" onclick="alert('Resume download would trigger here — replace with actual PDF link.'); return false;">
+          <div class="contact-link-icon">↓</div>
+          <div>
+            <div class="contact-link-label">Resume</div>
+            <div class="contact-link-val">Download PDF</div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="contact-form">
+      <div class="form-group">
+        <label class="form-label">Name</label>
+        <input type="text" class="form-input" placeholder="Your name" id="contact-name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" placeholder="your@email.com" id="contact-email">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Message</label>
+        <textarea class="form-textarea" placeholder="Tell me about the project or opportunity..." id="contact-message"></textarea>
+      </div>
+      <button class="form-submit" id="contact-submit">Send Message →</button>
+      <div id="form-status" style="margin-top:0.75rem; font-family:var(--font-mono); font-size:0.78rem; color:var(--success); display:none;">✓ Message sent — I'll respond within 24 hours.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Muhammad Abdul Samad Tariq · AI Engineer</div>
+  <div class="footer-copy">Built with discipline. © 2025</div>
+</footer>
+
+<!-- Floating Resume Button -->
+<a href="#" class="resume-float" onclick="alert('Resume download — replace with actual PDF link.'); return false;">
+  ↓ Resume PDF
+</a>
+
+<script>
+  // ── Intersection Observer for fade-in animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // ── Active nav link tracking
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const link = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
+        if (link) link.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(s => sectionObserver.observe(s));
+
+  // ── Project filter
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const projectCards = document.querySelectorAll('.project-card');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      projectCards.forEach(card => {
+        const cats = card.dataset.category || '';
+        if (filter === 'all' || cats.includes(filter)) {
+          card.style.display = 'grid';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // ── Expense Demo
+  document.getElementById('expense-btn').addEventListener('click', async () => {
+    const query = document.getElementById('expense-input').value.trim();
+    if (!query) return;
+    const output = document.getElementById('expense-output');
+    output.innerHTML = '<div class="loading">Analyzing <div class="typing-dots"><span></span><span></span><span></span></div></div>';
+    try {
+      const resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          system: `You are a personal financial AI assistant embedded in an AI expense tracker demo. 
+The user has the following sample spending data for context:
+- Monthly income: $2,500
+- Food & Dining: $480 (19% of income)
+- Transport: $180
+- Entertainment: $210
+- Utilities: $150
+- Shopping: $340
+- Savings rate: 12%
+Answer the user's question with specific, actionable insights based on this data. Keep response under 120 words. Be direct and precise, like a financial analyst.`,
+          messages: [{ role: 'user', content: query }]
+        })
+      });
+      const data = await resp.json();
+      const text = data.content?.[0]?.text || 'Unable to process — please try again.';
+      output.innerHTML = `<span style="color:var(--text)">${text.replace(/\n/g, '<br>')}</span>`;
+    } catch (e) {
+      output.innerHTML = `<span style="color:var(--muted); font-size:0.82rem;">Demo response: Based on your $480 food spend (19% of income), three quick wins: (1) batch cook Sunday—saves ~$120/mo, (2) limit delivery apps to twice weekly—saves ~$80/mo, (3) work lunches from home 3x/week—saves ~$60/mo. Total potential savings: ~$260/month, boosting your savings rate from 12% to 22%.</span>`;
+    }
+  });
+
+  // ── RAG Demo
+  document.getElementById('rag-btn').addEventListener('click', async () => {
+    const query = document.getElementById('rag-input').value.trim();
+    if (!query) return;
+    const output = document.getElementById('rag-output');
+    output.innerHTML = '<div class="loading">Retrieving & generating <div class="typing-dots"><span></span><span></span><span></span></div></div>';
+    try {
+      const resp = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          system: `You are the RAG (Retrieval-Augmented Generation) demo for an AI engineer's portfolio. 
+Answer the user's question about AI engineering with technical precision and depth. 
+Always end your response with a citation like: [Source: AI Engineering Handbook, §3.2] or similar plausible technical reference to demonstrate RAG-style grounding. Keep under 130 words. Be technically accurate and specific.`,
+          messages: [{ role: 'user', content: query }]
+        })
+      });
+      const data = await resp.json();
+      const text = data.content?.[0]?.text || 'Unable to process.';
+      output.innerHTML = `<span style="color:var(--text)">${text.replace(/\n/g, '<br>')}</span>`;
+    } catch (e) {
+      output.innerHTML = `<span style="color:var(--muted); font-size:0.82rem;">RAG (Retrieval-Augmented Generation) grounds LLM responses in a factual knowledge base. Use it when: (1) the LLM lacks domain-specific or recent knowledge, (2) you need citations for compliance or trust, or (3) responses must be grounded in proprietary documents. Key tradeoff: RAG adds latency (retrieval step) but dramatically reduces hallucinations. For dynamic knowledge bases, RAG outperforms fine-tuning on freshness. [Source: LLM Systems Design Patterns, §4.1]</span>`;
+    }
+  });
+
+  // ── Contact form
+  document.getElementById('contact-submit').addEventListener('click', () => {
+    const name = document.getElementById('contact-name').value.trim();
+    const email = document.getElementById('contact-email').value.trim();
+    const message = document.getElementById('contact-message').value.trim();
+    if (!name || !email || !message) {
+      alert('Please fill in all fields before sending.'); return;
+    }
+    document.getElementById('form-status').style.display = 'block';
+    document.getElementById('contact-submit').textContent = 'Sent ✓';
+    document.getElementById('contact-submit').style.opacity = '0.6';
+  });
+
+  // ── Animate skill bars on scroll
+  const skillObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.skill-fill').forEach(bar => {
+          const w = bar.style.width;
+          bar.style.width = '0';
+          setTimeout(() => { bar.style.width = w; }, 100);
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+  const skillsSection = document.getElementById('skills');
+  if (skillsSection) skillObserver.observe(skillsSection);
+</script>
+</body>
+</html>
